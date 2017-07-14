@@ -1,44 +1,24 @@
 package com.yidiantong.base;
 
 import com.yidiantong.dto.ResultDto;
-import com.yidiantong.enums.BaseCode;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 业务逻辑层基类
  * Created by wujw on 17/4/24.
  */
 public class BaseService {
+    @Value("${url.base}")
+    private String baseUrl;
+
     public ResultDto dto=new ResultDto();//数据返回工具类
 
-    //状态码返回
-    public BaseCode getStatus(String data){
-        BaseCode code;
-        switch (data){
-            case "406":
-                code= BaseCode.ERROR;
-            break;
-            case "404":
-                code= BaseCode.ERROR;
-                break;
-            case "409":
-                code= BaseCode.ERROR_EXIST;
-            break;
-            case "201":
-                code= BaseCode.SUCCESS;
-                break;
-            default:
-                code= BaseCode.SUCCESS;
-            break;
-        }
-        return code;
-//        if (data.isEmpty()){
-//            return BaseCode.ERROR;
-//        }else{
-//            return BaseCode.SUCCESS;
-//        }
+    /**
+     * 解释一下,baseurl放在配置文件里,BaseUrls.class我没找到拿的方法,所以,这边添加baseurl
+     * @param url
+     * @return
+     */
+    public String getURL(String url){
+        return baseUrl+url;
     }
-
 }

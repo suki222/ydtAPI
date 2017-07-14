@@ -10,10 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpException;
@@ -23,6 +20,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -188,12 +186,13 @@ public class HttpUtils {
             URL url = new URL(urlStr);
             URLConnection con = url.openConnection();
             con.setDoOutput(true);
-            con.setRequestProperty("Pragma:", "no-cache");
+//            con.setRequestProperty("Pragma:", "no-cache");
             con.setRequestProperty("Cache-Control", "no-cache");
             con.setRequestProperty("Content-Type", "text/xml");
             OutputStreamWriter out = new OutputStreamWriter(
                     con.getOutputStream());
             out.write(new String(xmlInfo.getBytes("utf-8")));
+            System.out.println("=======xml======="+new String(xmlInfo.getBytes("utf-8")));
             out.flush();
             out.close();
             BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -266,7 +265,7 @@ public class HttpUtils {
         for (String key : set) {
             query.append(String.format("%s=%s&", key, params.get(key)));
         }
-        return reqUrl + "?" + query.toString();
+        return query.toString().length()>0?reqUrl + "?" + query.toString():reqUrl;
     }
 
     /**
@@ -295,12 +294,18 @@ public class HttpUtils {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
 
+        //判断是否存在套餐id
+
+        if(json.has("packId")){
+            post.setHeader("packId", json.optString("packId"));
+            json.remove("packId");
+        }
         post.setHeader("Content-Type", "application/json");
         post.addHeader("Authorization", "Basic YWRtaW46");
         String result = "";
 
         try {
-
+            System.out.println("------------参数------------"+json.toString());
             StringEntity s = new StringEntity(json.toString(), "utf-8");
             s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
                     "application/json"));
@@ -332,7 +337,6 @@ public class HttpUtils {
             System.out.println("请求异常");
             throw new RuntimeException(e);
         }
-
         return result;
     }
     /**
@@ -383,5 +387,44 @@ public class HttpUtils {
         }
 
         return result;
+    }
+
+    /**
+     * 发送delete 请求
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public static String sendDelete(String url)
+            throws Exception {
+        InputStream inputStream = null;
+        HttpDelete request = new HttpDelete();
+        try {
+            System.out.println("======请求地址======"+url);
+            HttpClient client = new DefaultHttpClient();
+
+            request.setHeader("Accept-Encoding", "gzip");
+            request.setURI(new URI(url));
+
+            HttpResponse response = client.execute(request);
+
+            inputStream = response.getEntity().getContent();
+            String result ="";
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                result = getJsonStringFromGZIP(inputStream);
+                System.out.println("请求服务器成功，做相应处理");
+            } else {
+                System.out.println("请求服务器失败==="+result);
+                result=response.getStatusLine().getStatusCode()+"";
+                System.out.println("状态码====="+result);
+            }
+            return result;
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            request.releaseConnection();
+        }
+
     }
 }

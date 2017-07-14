@@ -8,11 +8,7 @@
 
 package com.yidiantong.utils;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +23,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
@@ -69,7 +66,28 @@ public class XmlUtils {
         }            
         return body;
     }
-    
+
+    public static Map xml2map(InputStream inputStream) throws DocumentException, IOException {
+        Map map = new HashMap();
+
+        // 读取输入流
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputStream);
+        // 得到xml根元素
+        Element root = document.getRootElement();
+        // 得到根元素的所有子节点
+        List elementList = root.elements();
+
+        for(int i=0;i<elementList.size();i++){
+            Element e= (Element) elementList.get(i);
+            map.put(e.getName(), e.getText());
+        }
+        // 释放资源
+        inputStream.close();
+        inputStream = null;
+        return map;
+    }
+
     public static String parseXML(SortedMap<String, String> parameters) {
         StringBuffer sb = new StringBuffer();
         sb.append("<xml>");

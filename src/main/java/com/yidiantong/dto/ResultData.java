@@ -9,70 +9,40 @@ import java.io.Serializable;
  * 返回数据
  */
 public class ResultData{
-    private String code;//返回码
-    private String message;//返回信息
-    private int statue;//返回状态 0:false,1:true;
-    private String method;//返回方法
-    private String time;//返回时间
-    private String data;//返回数据
+    private String resultMsg;//返回信息
+    private int resultCode;//返回状态 0:false,1:true;
+    private String resultBody;//返回数据
 
-    public String getCode() {
-        return code;
+    public String getResultMsg() {
+        return resultMsg;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
     }
 
-    public String getMessage() {
-        return message;
+    public int getResultCode() {
+        return resultCode;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setResultCode(int resultCode) {
+        this.resultCode = resultCode;
     }
 
-    public int getStatue() {
-        return statue;
+    public String getResultBody() {
+        return resultBody;
     }
 
-    public void setStatue(int statue) {
-        this.statue = statue;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
+    public void setResultBody(String resultBody) {
+        this.resultBody = resultBody;
     }
 
     @Override
     public String toString() {
         return "ResultData{" +
-                "code='" + code + '\'' +
-                ", message='" + message + '\'' +
-                ", statue=" + statue +
-                ", method='" + method + '\'' +
-                ", time='" + time + '\'' +
-                ", data=" + data +
+                "resultMsg='" + resultMsg + '\'' +
+                ", resultCode=" + resultCode +
+                ", resultBody='" + resultBody + '\'' +
                 '}';
     }
 }

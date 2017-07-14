@@ -1,6 +1,6 @@
 package com.yidiantong.dao;
 
-import com.yidiantong.bean.Testbean;
+import com.yidiantong.entity.Testbean;
 
 /**
  * dao 数据库连接层

@@ -1,4 +1,4 @@
-package com.yidiantong.bean;
+package com.yidiantong.entity;
 
 import org.springframework.stereotype.Component;
 
@@ -22,4 +22,11 @@ public class Testbean {
 		this.DQMC00 = DQMC00;
 	}
 
+	@Override
+	public String toString() {
+		return "Testbean{" +
+				"SSZX00='" + SSZX00 + '\'' +
+				", DQMC00='" + DQMC00 + '\'' +
+				'}';
+	}
 }

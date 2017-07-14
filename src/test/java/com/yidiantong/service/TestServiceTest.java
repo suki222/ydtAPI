@@ -21,6 +21,6 @@ public class TestServiceTest {
     TestService mService;
     @Test
     public void testApiTest() throws Exception {
-        System.out.println("========data=========="+mService.apiTest());
+        System.out.println("========data=========="+mService.getTest());
     }
 }

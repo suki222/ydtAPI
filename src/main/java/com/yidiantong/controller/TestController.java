@@ -1,13 +1,9 @@
 package com.yidiantong.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.text.ParseException;
 
-import com.yidiantong.bean.Testbean;
-import com.yidiantong.dao.TestDao;
+import com.yidiantong.entity.Testbean;
 import com.yidiantong.dto.ResultData;
-import com.yidiantong.enums.BaseCode;
-import com.yidiantong.service.Impl.TestServiceImpl;
 import com.yidiantong.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +22,17 @@ public class TestController {
 		return "hello world";
 	}
 
+	@RequestMapping(value="getDemo",method = RequestMethod.POST)
+	public ResultData getDemo() throws ParseException {
+		return mService.getTest();
+	}
+
 	/**
 	 * 测试demo1
 	 * @return
      */
 	@RequestMapping(value="get",method = RequestMethod.POST)
-	public ResultData get(){
+	public ResultData get() throws ParseException {
 		return mService.getTest();
 	}
 
@@ -41,7 +42,7 @@ public class TestController {
 	 * @return
      */
 	@RequestMapping(value="get")
-	public ResultData get(@RequestParam String name){
+	public ResultData get(@RequestParam String name) throws ParseException {
 		return mService.getTest();
 	}
 
@@ -52,7 +53,7 @@ public class TestController {
      * @return
      */
 	@RequestMapping(value="find/{id}/{name}",method = RequestMethod.POST)
-	public ResultData get(@PathVariable int id, @PathVariable String name){
+	public ResultData get(@PathVariable int id, @PathVariable String name) throws ParseException {
 		return mService.getTest();
 	}
 
